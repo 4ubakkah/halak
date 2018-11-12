@@ -3,20 +3,23 @@ package com.halak.service.rules.Commands;
 import com.halak.model.exception.NonEligibleMoveException;
 import com.halak.model.game.GameBoard;
 import com.halak.model.player.Player;
+import com.halak.service.rules.GameContext;
 import com.halak.service.rules.GameUtilities;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
 import java.util.List;
 
-public class SowStonesCommand implements Command {
+public class SowStonesCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-        int selectedPitId = (int) context.get("selectedPitId");
-        Player activePlayer = (Player) context.get("activePlayer");
-        List<Player> players = (List<Player>) context.get("players");
-        GameBoard gameBoard = (GameBoard) context.get("gameBoard");
+        GameContext gameContext = getGameContext(context);
+
+        int selectedPitId = gameContext.getSelectedPitId();
+        Player activePlayer = gameContext.getActivePlayer();
+        List<Player> players = gameContext.getPlayers();
+        GameBoard gameBoard = gameContext.getGameBoard();
 
         int stonesCount = gameBoard.getPit(selectedPitId).extractStones();
 

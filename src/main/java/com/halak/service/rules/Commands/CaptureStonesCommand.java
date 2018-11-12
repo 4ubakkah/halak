@@ -4,21 +4,23 @@ import com.halak.model.game.GameBoard;
 import com.halak.model.game.GameSpecifications;
 import com.halak.model.game.pit.Pit;
 import com.halak.model.player.Player;
+import com.halak.service.rules.GameContext;
 import com.halak.service.rules.GameUtilities;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
 import java.util.List;
 
-public class CaptureStonesCommand implements Command {
+public class CaptureStonesCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-        Player activePlayer = (Player) context.get("activePlayer");
-        List<Player> players = (List<Player>) context.get("players");
-        int lastSownPitId = (int) context.get("lastSownPitId");
-        int selectedPitId = (int) context.get("selectedPitId");
-        GameBoard gameBoard = (GameBoard) context.get("gameBoard");
+        GameContext gameContext = getGameContext(context);
+        Player activePlayer = gameContext.getActivePlayer();
+        List<Player> players = gameContext.getPlayers();
+        int lastSownPitId = gameContext.getLastSownPitId();
+        int selectedPitId = gameContext.getSelectedPitId();
+        GameBoard gameBoard = gameContext.getGameBoard();
 
         if (!GameUtilities.findOpponent(players, activePlayer).equals(lastSownPitId) && pitBelongsToPlayer(activePlayer, selectedPitId)) {
             if (gameBoard.getPit(selectedPitId).getStones() == 1) {

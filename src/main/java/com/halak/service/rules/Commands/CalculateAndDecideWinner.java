@@ -3,6 +3,7 @@ package com.halak.service.rules.Commands;
 import com.halak.model.game.GameBoard;
 import com.halak.model.game.pit.Pit;
 import com.halak.model.player.Player;
+import com.halak.service.rules.GameContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
@@ -12,22 +13,22 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class CalculateAndDecideWinner implements Command {
+public class CalculateAndDecideWinner extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-        boolean gameComplete = (boolean) context.get("complete");
-        List<Player> players = (List<Player>) context.get("players");
-        GameBoard gameBoard = (GameBoard) context.get("gameBoard");
+        GameContext gameContext = getGameContext(context);
+        boolean gameComplete = gameContext.isComplete();
+        List<Player> players = gameContext.getPlayers();
+        GameBoard gameBoard =  gameContext.getGameBoard();
 
         if (gameComplete) {
             calculateAndFindWinner(gameBoard, players);
-            context.put("complete", true);
-
-            return true;
         }
 
-        return false;
+        gameContext.setComplete(gameComplete);
+
+        return gameComplete;
     }
 
     private void calculateAndFindWinner(GameBoard gameBoard, List<Player> players) {

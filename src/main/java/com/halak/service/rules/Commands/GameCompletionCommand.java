@@ -4,6 +4,7 @@ import com.halak.model.game.GameBoard;
 import com.halak.model.game.GameSpecifications;
 import com.halak.model.game.pit.Pit;
 import com.halak.model.player.Player;
+import com.halak.service.rules.GameContext;
 import com.halak.service.rules.GameUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.chain.Command;
@@ -12,13 +13,15 @@ import org.apache.commons.chain.Context;
 import java.util.List;
 
 @Slf4j
-public class GameCompletionCommand implements Command {
+public class GameCompletionCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-        GameBoard gameBoard = (GameBoard) context.get("gameBoard");
-        Player activePlayer = (Player) context.get("activePlayer");
-        List<Player> players = (List<Player>) context.get("players");
+        GameContext gameContext = getGameContext(context);
+
+        GameBoard gameBoard = gameContext.getGameBoard();
+        Player activePlayer = gameContext.getActivePlayer();
+        List<Player> players = gameContext.getPlayers();
 
         Player opponent = GameUtilities.findOpponent(players, activePlayer);
 

@@ -4,17 +4,18 @@ import com.halak.model.exception.NonEligibleMoveException;
 import com.halak.model.game.GameBoard;
 import com.halak.model.game.GameSpecifications;
 import com.halak.model.player.Player;
+import com.halak.service.rules.GameContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
-public class CheckEligibilityCommand implements Command {
+public class CheckEligibilityCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
-
-        int selectedPitId = (int) context.get("selectedPitId");
-        Player activePlayer = (Player) context.get("activePlayer");
-        GameBoard gameBoard = (GameBoard) context.get("gameBoard");
+        GameContext gameContext = getGameContext(context);
+        int selectedPitId = gameContext.getSelectedPitId();
+        Player activePlayer = gameContext.getActivePlayer();
+        GameBoard gameBoard = gameContext.getGameBoard();
 
         checkIfPlayerIsEligibleToMakeMove(activePlayer, selectedPitId, gameBoard.isKalah(selectedPitId));
 

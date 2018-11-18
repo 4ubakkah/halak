@@ -1,7 +1,7 @@
 package com.halak.model.mapper.impl;
 
-import com.halak.model.game.pit.Pit;
 import com.halak.model.dto.PitDto;
+import com.halak.model.entity.PitEntity;
 import com.halak.model.mapper.PitMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 public class PitMapperImpl implements PitMapper {
 
     @Override
-    public PitDto toDto(Pit pit) {
-        return PitDto.builder().stonesCount(pit.getStones()).build();
+    public PitDto toDto(PitEntity pit) {
+        return PitDto.builder().stonesCount(pit.getStonesCount()).index(pit.getIndex()).build();
     }
 
     @Override
-    public List<PitDto> toDtoList(List<Pit> pits) {
+    public List<PitDto> toDtoList(List<PitEntity> pits) {
         return pits.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

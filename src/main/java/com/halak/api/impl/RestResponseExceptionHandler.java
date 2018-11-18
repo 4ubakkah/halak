@@ -1,7 +1,7 @@
 package com.halak.api.impl;
 
 import com.halak.model.dto.ErrorResponseDto;
-import com.halak.model.exception.NonEligibleMoveException;
+import com.halak.model.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,11 +15,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NonEligibleMoveException.class)
-    protected ResponseEntity<Object> handleNonEligibleMove(RuntimeException ex, WebRequest request) {
+    @ExceptionHandler(value = {ValidationException.class, NonEligibleMoveException.class, GameDoesntExistException.class})
+    protected ResponseEntity<Object> handleBadRequestCausingExceptions(RuntimeException ex, WebRequest request) {
         log.error("Error: {}", ex.getMessage(), ex);
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());
         return handleExceptionInternal(ex, errorResponseDto, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {UnsupportedContextType.class, NonExistingPitIndexException.class})
+    protected ResponseEntity<Object> handleInternalServerErrorCausingExceptions(RuntimeException ex, WebRequest request) {
+        log.error("Error: {}", ex.getMessage(), ex);
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());
+        return handleExceptionInternal(ex, errorResponseDto, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(RuntimeException.class)

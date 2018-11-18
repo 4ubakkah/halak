@@ -1,0 +1,32 @@
+server:
+    port: 9000
+
+liquibase:
+    change-log: classpath:liquibase/changesets/master-changelog.xml
+    contexts: "init, data"
+    enabled: false
+    #labels: "dev OR all"
+
+spring:
+    application:
+        name: halak game
+    datasource:
+        driverClassName: org.h2.Driver
+        url: jdbc:h2:mem:halak;DB_CLOSE_DELAY=-1
+        username: sa
+        password:
+
+    h2.console.enabled: true
+    h2.console.path: /h2-console
+
+    jackson.serialization:
+        INDENT_OUTPUT: true
+
+    #jpa.hibernate.ddl-auto: validate
+
+    jpa.hibernate.ddl-auto: create-drop
+
+    logging:
+        level:
+          root: DEBUG
+          org.springframework.web: DEBUG

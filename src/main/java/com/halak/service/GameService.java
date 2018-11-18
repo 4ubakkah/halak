@@ -1,14 +1,14 @@
 package com.halak.service;
 
-import com.halak.model.game.Game;
+import com.halak.model.entity.GameState;
 
 import java.util.Optional;
 
 public interface GameService {
 
-    Game create();
+    GameState create();
 
-    Game play(String gameId, int pitId) throws Exception;
+    GameState play(Long gameId, int pitIndex) throws Exception;
 
-    Optional<Game> getInfo(String gameId);
+    Optional<GameState> getInfo(Long gameId);
 }

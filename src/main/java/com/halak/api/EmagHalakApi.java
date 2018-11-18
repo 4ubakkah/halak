@@ -5,12 +5,13 @@ import com.halak.model.dto.GameDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
+import static com.halak.api.impl.EmagHalakApiImpl.BASE_GAME_URI;
+
+@RequestMapping(path = BASE_GAME_URI, produces = {MediaType.APPLICATION_JSON_VALUE})
 public interface EmagHalakApi {
 
     @ApiOperation(value = "Create a game", httpMethod = "POST")
@@ -29,7 +30,7 @@ public interface EmagHalakApi {
             @ApiResponse(code = 400, message = "Could not make move based on provided arguments"),
             @ApiResponse(code = 500, message = "Internal server error"),
     })
-    ResponseEntity<GameDto> playGame(@PathVariable String gameId, @PathVariable int pitId) throws Exception;
+    ResponseEntity<GameDto> playGame(@PathVariable Long gameId, @PathVariable int pitId) throws Exception;
 
     @ApiOperation(value = "Get game info", httpMethod = "GET")
     @GetMapping(value = EmagHalakApiImpl.GET_GAME_URI)
@@ -38,5 +39,5 @@ public interface EmagHalakApi {
             @ApiResponse(code = 204, message = "No game information to display"),
             @ApiResponse(code = 500, message = "Internal server error"),
     })
-    ResponseEntity<GameDto> getGame(@PathVariable String gameId);
+    ResponseEntity<GameDto> getGame(@PathVariable Long gameId);
 }

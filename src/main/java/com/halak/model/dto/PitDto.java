@@ -8,4 +8,6 @@ import lombok.Data;
 public class PitDto {
 
     private int stonesCount;
+
+    private int index;
 }

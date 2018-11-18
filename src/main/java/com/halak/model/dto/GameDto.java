@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GameDto {
 
-    private String gameId;
+    private Long gameId;
 
     @JsonIgnore
     private List<PitDto> pits = new ArrayList<>();
@@ -28,10 +29,10 @@ public class GameDto {
     public List<ImmutableMap<Integer, Integer>> getMapOfPits() {
         List<ImmutableMap<Integer, Integer>> list = new ArrayList<>();
 
-        for (int i = 0; i < pits.size(); i++) {
+        pits.sort(Comparator.comparingInt(PitDto::getIndex));
 
-            list.add(ImmutableMap.of(i, pits.get(i).getStonesCount()));
-        }
+        pits.forEach(pitDto ->  list.add(ImmutableMap.of(pitDto.getIndex(), pitDto.getStonesCount())));
+
         return list;
     }
 }

@@ -1,13 +1,13 @@
 package com.halak.model.mapper;
 
-import com.halak.model.game.pit.Pit;
 import com.halak.model.dto.PitDto;
+import com.halak.model.entity.PitEntity;
 
 import java.util.List;
 
 public interface PitMapper {
 
-    PitDto toDto(Pit pit);
+    PitDto toDto(PitEntity pit);
 
-    List<PitDto> toDtoList(List<Pit> pits);
+    List<PitDto> toDtoList(List<PitEntity> pits);
 }

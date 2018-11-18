@@ -1,14 +1,14 @@
 package com.halak.model.mapper;
 
 import com.halak.model.dto.GameDto;
-import com.halak.model.game.Game;
+import com.halak.model.entity.GameState;
 import com.halak.service.rules.GameContext;
 
 public interface GameMapper {
 
-    GameDto toDto(Game game);
+    GameDto toDto(GameState gameState);
 
-    GameContext toContext(Game game, int selectedPitId);
+    GameContext toContext(GameState gameState, int selectedPitId);
 
-    Game toEntity(GameContext gameContext, String gameId);
+    GameState toEntity(GameContext gameContext);
 }

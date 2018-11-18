@@ -1,8 +1,7 @@
 package com.halak.service.rules.Commands;
 
-import com.halak.model.exception.NonEligibleMoveException;
-import com.halak.model.game.GameBoard;
-import com.halak.model.player.Player;
+import com.halak.model.entity.GameBoardEntity;
+import com.halak.model.entity.PlayerEntity;
 import com.halak.service.rules.GameContext;
 import com.halak.service.rules.GameUtilities;
 import org.apache.commons.chain.Command;
@@ -10,43 +9,45 @@ import org.apache.commons.chain.Context;
 
 import java.util.List;
 
+/**
+ * Active player is sowing stones starting from selected pit index.
+ * On the start of the move player extracts all stones from selected pit and moving counter-clockwise puts one stone in each following pit,
+ * excluding opponent's Kalah but including his own.
+ * */
 public class SowStonesCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
         GameContext gameContext = getGameContext(context);
 
-        int selectedPitId = gameContext.getSelectedPitId();
-        Player activePlayer = gameContext.getActivePlayer();
-        List<Player> players = gameContext.getPlayers();
-        GameBoard gameBoard = gameContext.getGameBoard();
+        int selectedPitIndex = gameContext.getSelectedPitIndex();
+        PlayerEntity activePlayer = gameContext.getActivePlayer();
+        List<PlayerEntity> players = gameContext.getPlayers();
+        GameBoardEntity gameBoard = gameContext.getGameState().getGameBoard();
 
-        int stonesCount = gameBoard.getPit(selectedPitId).extractStones();
+        // Get stones out of selected pit
+        int stonesCount = gameBoard.getPit(selectedPitIndex).extractStones();
 
-        if (stonesCount == 0) {
-            throw new NonEligibleMoveException("You selected pitId: [%s]. You can't sow from empty pit!", selectedPitId);
-        }
-
-        int startingPitId = selectedPitId + 1;
-        int lastSownPitId = startingPitId % gameBoard.getCountOfPits();
+        // At start last sown pit index is set to selected pit, on the first iteration we are starting to sown from pit next to selected one
+        int lastSownPitIndex = selectedPitIndex;
 
         for (int i = 0; i < stonesCount; i++) {
-            if (getOpponentsKalahId(players, activePlayer).equals(lastSownPitId)) {
-                lastSownPitId = (lastSownPitId + 1) % gameBoard.getCountOfPits();
-            }
+            // Switch to opponents pits if needed
+            lastSownPitIndex = (lastSownPitIndex + 1) % gameBoard.getCountOfPits();
 
-            if (!getOpponentsKalahId(players, activePlayer).equals(lastSownPitId)) {
-                gameBoard.getPit(lastSownPitId).putStone();
-                lastSownPitId = (lastSownPitId + 1) % gameBoard.getCountOfPits();
+            // if next pit is opponent's Kalah - skip it without putting stone inside
+            if (!getOpponentsKalahId(players, activePlayer).equals(lastSownPitIndex)) {
+                gameBoard.getPit(lastSownPitIndex).putStone();
             }
         }
 
-        context.put("lastSownPitId", lastSownPitId - 1);
+        // Save last sown pit index before proceeding in chain
+        gameContext.setLastSownPitIndex(lastSownPitIndex);
 
         return false;
     }
 
-    private Integer getOpponentsKalahId(List<Player> players, Player activePlayer) {
+    private Integer getOpponentsKalahId(List<PlayerEntity> players, PlayerEntity activePlayer) {
         return GameUtilities.findOpponent(players, activePlayer).getKalahIndex();
     }
 }

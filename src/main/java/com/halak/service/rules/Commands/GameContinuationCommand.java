@@ -1,5 +1,6 @@
 package com.halak.service.rules.Commands;
 
+import com.halak.model.exception.GameIsAlreadyCompleteException;
 import com.halak.service.rules.GameContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
@@ -11,7 +12,7 @@ public class GameContinuationCommand extends AbstractGameCommand implements Comm
         GameContext gameContext = getGameContext(context);
 
         if(gameContext.isComplete()) {
-            throw new RuntimeException("Game is complete already, create new game to be able to play again.");
+            throw new GameIsAlreadyCompleteException("Game is complete already, create new game to be able to play again. Game id: {%s}", gameContext.getGameState().getId());
         }
 
         return false;

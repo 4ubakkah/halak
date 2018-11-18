@@ -1,9 +1,9 @@
 package com.halak.service.rules.Commands;
 
-import com.halak.model.game.GameBoard;
-import com.halak.model.game.GameSpecifications;
-import com.halak.model.game.pit.Pit;
-import com.halak.model.player.Player;
+import com.halak.model.entity.GameBoardEntity;
+import com.halak.model.entity.PitEntity;
+import com.halak.model.entity.PlayerEntity;
+import com.halak.configuration.GameSpecifications;
 import com.halak.service.rules.GameContext;
 import com.halak.service.rules.GameUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -19,27 +19,27 @@ public class GameCompletionCommand extends AbstractGameCommand implements Comman
     public boolean execute(Context context) {
         GameContext gameContext = getGameContext(context);
 
-        GameBoard gameBoard = gameContext.getGameBoard();
-        Player activePlayer = gameContext.getActivePlayer();
-        List<Player> players = gameContext.getPlayers();
+        GameBoardEntity gameBoard = gameContext.getGameState().getGameBoard();
+        PlayerEntity activePlayer = gameContext.getActivePlayer();
+        List<PlayerEntity> players = gameContext.getPlayers();
 
-        Player opponent = GameUtilities.findOpponent(players, activePlayer);
+        PlayerEntity opponent = GameUtilities.findOpponent(players, activePlayer);
 
         return hasPlayerCompleteTheGame(gameBoard, activePlayer, opponent) || hasPlayerCompleteTheGame(gameBoard, opponent, activePlayer);
     }
 
-    private List<Pit> getPlayerPits(GameBoard gameBoard, Player player) {
+    private List<PitEntity> getPlayerPits(GameBoardEntity gameBoard, PlayerEntity player) {
         return gameBoard.getPitsInRange(player.getKalahIndex() - GameSpecifications.PITS_COUNT_PER_PLAYER, player.getKalahIndex());
     }
 
-    private boolean doPlayersPitsContainStones(GameBoard gameBoard, Player player) {
-        return getPlayerPits(gameBoard, player).stream().mapToInt(pit -> pit.getStones()).sum() == 0;
+    private boolean doPlayersPitsContainStones(GameBoardEntity gameBoard, PlayerEntity player) {
+        return getPlayerPits(gameBoard, player).stream().mapToInt(PitEntity::getStonesCount).sum() == 0;
     }
 
-    private boolean hasPlayerCompleteTheGame(GameBoard gameBoard, Player player, Player opponent) {
+    private boolean hasPlayerCompleteTheGame(GameBoardEntity gameBoard, PlayerEntity player, PlayerEntity opponent) {
         if (doPlayersPitsContainStones(gameBoard, player)) {
-            log.info("Player {} finished game.", player);
-            moveStonesFromHouseToKalah(gameBoard, opponent);
+            log.info("PlayerEntity {} finished game.", player);
+            moveStonesFromOpponentsPitsToKalah(gameBoard, player, opponent);
             return true;
         }
 
@@ -47,13 +47,10 @@ public class GameCompletionCommand extends AbstractGameCommand implements Comman
     }
 
     //TODO description
-    private GameBoard moveStonesFromHouseToKalah(GameBoard gameBoard, Player player) {
-//        List<Pit> pits = gameBoard.getPits().subList(player.getKalahIndex() - GameSpecifications.PITS_COUNT_PER_PLAYER, player.getKalahIndex() + 1);
-        List<Pit> playerPits = getPlayerPits(gameBoard, player);
-        int sumOfStonesCollectedFromPits = playerPits.stream().mapToInt(Pit::extractStones).sum();
+    private void moveStonesFromOpponentsPitsToKalah(GameBoardEntity gameBoard, PlayerEntity player, PlayerEntity opponent) {
+        List<PitEntity> playerPits = getPlayerPits(gameBoard, opponent);
+        int sumOfStonesCollectedFromPits = playerPits.stream().mapToInt(PitEntity::extractStones).sum();
 
-        playerPits.get(playerPits.size() - 1).addStones(sumOfStonesCollectedFromPits);
-
-        return gameBoard;
+        gameBoard.getPit(player.getKalahIndex()).addStones(sumOfStonesCollectedFromPits);
     }
 }

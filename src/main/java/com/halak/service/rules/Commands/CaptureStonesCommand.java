@@ -1,43 +1,44 @@
 package com.halak.service.rules.Commands;
 
-import com.halak.model.game.GameBoard;
-import com.halak.model.game.GameSpecifications;
-import com.halak.model.game.pit.Pit;
-import com.halak.model.player.Player;
+import com.halak.model.entity.GameBoardEntity;
+import com.halak.model.entity.PlayerEntity;
 import com.halak.service.rules.GameContext;
-import com.halak.service.rules.GameUtilities;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
-import java.util.List;
+import static com.halak.configuration.GameSpecifications.PITS_COUNT_PER_PLAYER;
+import static com.halak.configuration.GameSpecifications.PLAYERS_COUNT;
+import static com.halak.service.rules.GameUtilities.pitBelongsToPlayer;
 
+/**
+ * In case the last sown stone is put into empty pit belonging to player(not Kalah) and opposite pit belonging to opponent contains stones,
+ * current stone and stones from opposite pit are captured and put into active players Kalah.
+ */
 public class CaptureStonesCommand extends AbstractGameCommand implements Command {
 
     @Override
     public boolean execute(Context context) {
         GameContext gameContext = getGameContext(context);
-        Player activePlayer = gameContext.getActivePlayer();
-        List<Player> players = gameContext.getPlayers();
-        int lastSownPitId = gameContext.getLastSownPitId();
-        int selectedPitId = gameContext.getSelectedPitId();
-        GameBoard gameBoard = gameContext.getGameBoard();
+        PlayerEntity activePlayer = gameContext.getActivePlayer();
+        int lastSownPitIndex = gameContext.getLastSownPitIndex();
+        GameBoardEntity gameBoard = gameContext.getGameState().getGameBoard();
 
-        if (!GameUtilities.findOpponent(players, activePlayer).equals(lastSownPitId) && pitBelongsToPlayer(activePlayer, selectedPitId)) {
-            if (gameBoard.getPit(selectedPitId).getStones() == 1) {
-                int oppositePitId = Math.abs(lastSownPitId - 12);
+        // 1.) Last sown pit is not Kalah
+        // 2.) Last sown pit belongs to active player
+        if (!gameBoard.getPit(lastSownPitIndex).isKalah() && pitBelongsToPlayer(activePlayer, lastSownPitIndex)) {
+            // If extracting 1 stone from last sown pit produce 0 - this means before sowing pit was empty
+            if (gameBoard.getPit(lastSownPitIndex).getStonesCount() - 1 == 0) {
+                // Taking difference of last sown pit index and 12 (amount of sownable pits) and making absolute value out of it would produce opposite pit index
+                int oppositePitId = Math.abs(lastSownPitIndex - PITS_COUNT_PER_PLAYER * PLAYERS_COUNT);
 
-                if (gameBoard.getPit(oppositePitId).getStones() > 0) {
-                    int accumulatedStones = gameBoard.getPit(oppositePitId).extractStones() + gameBoard.getPit(lastSownPitId).extractStones();
-                    Pit playersKalah = gameBoard.getPit(activePlayer.getKalahIndex());
-                    playersKalah.addStones(accumulatedStones);
+                // Skip capturing if opposite pit is empty
+                if (gameBoard.getPit(oppositePitId).getStonesCount() > 0) {
+                    int accumulatedStones = gameBoard.getPit(oppositePitId).extractStones() + gameBoard.getPit(lastSownPitIndex).extractStones();
+                    gameBoard.getPit(activePlayer.getKalahIndex()).addStones(accumulatedStones);
                 }
             }
         }
 
         return false;
-    }
-
-    private boolean pitBelongsToPlayer(Player activePlayer, int pitId) {
-        return pitId < activePlayer.getKalahIndex() && pitId >= activePlayer.getKalahIndex() - GameSpecifications.PITS_COUNT_PER_PLAYER;
     }
 }

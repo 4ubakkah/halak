@@ -1,16 +1,19 @@
 package com.halak.service.rules.Commands;
 
-import com.halak.model.game.GameBoard;
-import com.halak.model.game.pit.Pit;
-import com.halak.model.player.Player;
+import com.halak.model.entity.GameBoardEntity;
+import com.halak.model.entity.PitEntity;
+import com.halak.model.entity.PlayerEntity;
 import com.halak.service.rules.GameContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import static com.halak.configuration.GameSpecifications.DRAW_GAME_TEXT;
 
 @Slf4j
 public class CalculateAndDecideWinner extends AbstractGameCommand implements Command {
@@ -19,22 +22,27 @@ public class CalculateAndDecideWinner extends AbstractGameCommand implements Com
     public boolean execute(Context context) {
         GameContext gameContext = getGameContext(context);
         boolean gameComplete = gameContext.isComplete();
-        List<Player> players = gameContext.getPlayers();
-        GameBoard gameBoard =  gameContext.getGameBoard();
+        List<PlayerEntity> players = gameContext.getPlayers();
+        GameBoardEntity gameBoard = gameContext.getGameState().getGameBoard();
 
         if (gameComplete) {
-            calculateAndFindWinner(gameBoard, players);
+            String winnerName = calculateAndFindWinner(gameBoard, players);
+            gameContext.setWinnerName(winnerName);
         }
 
-        gameContext.setComplete(gameComplete);
+        //TODO remove
+        //gameContext.setComplete(gameComplete);
 
         return gameComplete;
     }
 
-    private void calculateAndFindWinner(GameBoard gameBoard, List<Player> players) {
-        TreeMap<String, Pit> playerResultsMap = players.stream().collect(Collectors.toMap(p -> p.getName(), p -> gameBoard.getPit(p.getKalahIndex()), (a, b) -> a, TreeMap::new));
+    private String calculateAndFindWinner(GameBoardEntity gameBoard, List<PlayerEntity> players) {
+        TreeMap<PitEntity, String> playerResultsMap = players.stream()
+                .collect(Collectors.toMap(p -> gameBoard.getPit(p.getKalahIndex()), PlayerEntity::getName, (a, b) -> a, () -> new TreeMap<>(Comparator.comparingInt(PitEntity::getStonesCount))));
 
-        String winnerName = playerResultsMap.pollLastEntry().getKey();
-        log.info("Player {} ", winnerName);
+        String winnerName = playerResultsMap.size() == 1 ? DRAW_GAME_TEXT : playerResultsMap.pollLastEntry().getValue();
+        log.info("Winner is: {} ", winnerName);
+
+        return winnerName;
     }
 }

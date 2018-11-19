@@ -1,5 +1,6 @@
 package com.halak.model.entity;
 
+import com.halak.model.entity.factory.PitEntityFactory;
 import com.halak.model.exception.NonExistingPitIndexException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class GameBoardEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "PITS")
-    private List<PitEntity> pitEntities = new ArrayList<>(PITS_COUNT_OVERALL);/*= Arrays.asList(new PitEntity[14]);*/
+    private List<PitEntity> pitEntities = new ArrayList<>(PITS_COUNT_OVERALL);
 
     public GameBoardEntity() {
         fillPitsWithStones();
@@ -48,12 +49,8 @@ public class GameBoardEntity {
         return (index == PITS_COUNT_PER_PLAYER) || (index == PITS_COUNT_PER_PLAYER * PLAYERS_COUNT + KALAHS_COUNT_PER_PLAYER);
     }
 
-    public int getCountOfPits() {
-        return pitEntities.size();
-    }
-
     public PitEntity getPit(int index) {
-        if (index < 0 || index >= pitEntities.size()) {
+        if (index < 0 || index >= PITS_COUNT_OVERALL) {
             throw new NonExistingPitIndexException("Provided pit index: {%s} is outside of game board boundaries", index);
         }
 

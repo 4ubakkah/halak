@@ -1,5 +1,7 @@
-package com.halak.model.entity;
+package com.halak.model.entity.factory;
 
+import com.halak.model.entity.GameBoardEntity;
+import com.halak.model.entity.GameState;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

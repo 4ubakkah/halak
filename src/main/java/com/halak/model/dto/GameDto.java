@@ -25,6 +25,7 @@ public class GameDto {
 
     private String activePlayer;
 
+    // Used to represent pits and their content in human-readable way
     @JsonProperty("status")
     public List<ImmutableMap<Integer, Integer>> getMapOfPits() {
         List<ImmutableMap<Integer, Integer>> list = new ArrayList<>();

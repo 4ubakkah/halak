@@ -6,6 +6,9 @@ import com.halak.service.rules.GameContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
+/**
+ * Validates selected input. If selected pit index is outside of game board range - throws exception and breaks the game change
+ */
 public class ValidateInputCommand extends AbstractGameCommand implements Command {
 
     @Override

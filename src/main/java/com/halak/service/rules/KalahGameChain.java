@@ -4,6 +4,9 @@ import com.halak.service.rules.Commands.*;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.impl.ChainBase;
 
+/**
+ * Rules set where commands are stored in serial order.
+ */
 public class KalahGameChain extends ChainBase {
 
     public KalahGameChain() {

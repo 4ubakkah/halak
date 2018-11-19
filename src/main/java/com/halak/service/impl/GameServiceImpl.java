@@ -1,8 +1,8 @@
 package com.halak.service.impl;
 
 import com.halak.model.entity.GameState;
-import com.halak.model.entity.GameStateFactory;
-import com.halak.model.exception.GameDoesntExistException;
+import com.halak.model.entity.factory.GameStateFactory;
+import com.halak.model.exception.GameDoesNotExistException;
 import com.halak.model.mapper.GameMapper;
 import com.halak.persistance.GameStateRepository;
 import com.halak.service.GameService;
@@ -43,11 +43,15 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameState play(Long gameId, int pitIndex) throws Exception {
-        GameState currentGame = gameStateRepository.findGameById(gameId).orElseThrow(() -> new GameDoesntExistException("Game with provided id: [%s] doesn't exist.", gameId));
+        GameState currentGame = gameStateRepository.findGameById(gameId).orElseThrow(() -> new GameDoesNotExistException("Game with provided id: [%s] doesn't exist.", gameId));
 
+        // Maps GameState retrieved from persistent store to GameContext structure
         GameContext gameContext = gameMapper.toContext(currentGame, pitIndex);
 
+        // Creates instance of Game Chain
         KalahGameChain kalahGameChain = chainFactory.kalahGameChain();
+
+        //Starts chain execution with current state of game context
         kalahGameChain.execute(gameContext);
 
         currentGame = gameMapper.toEntity(gameContext);

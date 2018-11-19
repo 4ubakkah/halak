@@ -2,7 +2,7 @@ package com.halak.service.rules.Commands;
 
 import com.halak.model.entity.GameBoardEntity;
 import com.halak.model.entity.GameState;
-import com.halak.model.entity.GameStateFactory;
+import com.halak.model.entity.factory.GameStateFactory;
 import com.halak.model.entity.PitEntity;
 import com.halak.service.rules.GameContext;
 import org.junit.jupiter.api.DisplayName;

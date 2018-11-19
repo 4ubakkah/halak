@@ -11,9 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.halak.api.impl.EmagHalakApiImpl.BASE_GAME_URI;
 
+/**
+ * Rest controller exposing game manipulation to client
+ */
 @RequestMapping(path = BASE_GAME_URI, produces = {MediaType.APPLICATION_JSON_VALUE})
 public interface EmagHalakApi {
 
+
+    /**
+     * Creates new game instance and returns current game state
+     */
     @ApiOperation(value = "Create a game", httpMethod = "POST")
     @PostMapping(value = EmagHalakApiImpl.CREATE_GAME_URI)
     @ApiResponses(value = {
@@ -23,6 +30,12 @@ public interface EmagHalakApi {
     })
     ResponseEntity<GameDto> createGame();
 
+    /**
+     * @param gameId id of the game to trigger
+     * @param pitId  index of pit to make move from
+     * @return {@linkplain GameDto} current game state
+     * @throws Exception
+     */
     @ApiOperation(value = "Make turn", httpMethod = "PUT")
     @PutMapping(value = EmagHalakApiImpl.PLAY_GAME_URI)
     @ApiResponses(value = {
@@ -32,6 +45,10 @@ public interface EmagHalakApi {
     })
     ResponseEntity<GameDto> playGame(@PathVariable Long gameId, @PathVariable int pitId) throws Exception;
 
+    /**
+     * @param gameId id of the game to retrieve information about
+     * @return {@linkplain GameDto} current game state
+     */
     @ApiOperation(value = "Get game info", httpMethod = "GET")
     @GetMapping(value = EmagHalakApiImpl.GET_GAME_URI)
     @ApiResponses(value = {

@@ -9,6 +9,8 @@ import org.apache.commons.chain.Context;
 
 import java.util.List;
 
+import static com.halak.configuration.GameSpecifications.PITS_COUNT_OVERALL;
+
 /**
  * Active player is sowing stones starting from selected pit index.
  * On the start of the move player extracts all stones from selected pit and moving counter-clockwise puts one stone in each following pit,
@@ -33,7 +35,7 @@ public class SowStonesCommand extends AbstractGameCommand implements Command {
 
         for (int i = 0; i < stonesCount; i++) {
             // Switch to opponents pits if needed
-            lastSownPitIndex = (lastSownPitIndex + 1) % gameBoard.getCountOfPits();
+            lastSownPitIndex = (lastSownPitIndex + 1) % PITS_COUNT_OVERALL;
 
             // if next pit is opponent's Kalah - skip it without putting stone inside
             if (!getOpponentsKalahId(players, activePlayer).equals(lastSownPitIndex)) {

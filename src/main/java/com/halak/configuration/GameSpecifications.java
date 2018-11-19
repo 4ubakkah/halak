@@ -4,7 +4,9 @@ public class GameSpecifications {
 
     public static final int PITS_COUNT_PER_PLAYER = 6;
 
-    public static final int STONES_COUNT_PER_PIT = 6;
+    public static final int INITIAL_STONES_COUNT_PER_PIT = 6;
+
+    public static final int INITIAL_STONES_COUNT_PER_KALAH = 0;
 
     public static final int KALAHS_COUNT_PER_PLAYER = 1;
 

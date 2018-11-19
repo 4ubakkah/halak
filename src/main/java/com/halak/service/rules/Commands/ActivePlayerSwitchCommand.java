@@ -8,6 +8,10 @@ import org.apache.commons.chain.Context;
 
 import java.util.List;
 
+/**
+ * Makes decision if active player has to be switched based on the index of last sown pit.
+ * If last sown pit is active players Kalah - player gets right for extra move, otherwise - switch turn to opponent.
+ */
 public class ActivePlayerSwitchCommand extends AbstractGameCommand implements Command {
 
     @Override

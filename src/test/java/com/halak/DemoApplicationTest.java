@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class DemoApplicationTest {
 
     @Test
-    @DisplayName("Should successfully load game context")
+    @DisplayName("[Should] successfully load game context")
     public void contextLoads() {
         // intentionally left blank, if not exceptions are thrown - application was able to bootstrap
     }

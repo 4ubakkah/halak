@@ -1,7 +1,7 @@
 package com.halak.service.impl;
 
 import com.halak.model.entity.GameState;
-import com.halak.model.entity.GameStateFactory;
+import com.halak.model.entity.factory.GameStateFactory;
 import com.halak.model.mapper.GameMapper;
 import com.halak.persistance.GameStateRepository;
 import com.halak.service.rules.ChainFactory;

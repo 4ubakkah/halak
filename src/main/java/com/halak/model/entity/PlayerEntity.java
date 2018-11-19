@@ -18,11 +18,6 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "PLAYER")
 public class PlayerEntity {
 
-    public PlayerEntity(int kalahIndex, String name) {
-        this.kalahIndex = kalahIndex;
-        this.name = name;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
@@ -34,10 +29,6 @@ public class PlayerEntity {
     @Column(name = "LAST_UPDATED")
     @Temporal(TIMESTAMP)
     private Date lastUpdated;
-
-//    @ManyToOne
-//    @JoinColumn(name = "GAME_STATE_ID")
-//    private GameState gameState;
 
     @Column(name = "NAME")
     private String name;

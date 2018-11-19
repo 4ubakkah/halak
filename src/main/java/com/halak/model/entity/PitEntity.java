@@ -19,15 +19,6 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Table(name = "PIT")
 public class PitEntity {
 
-    public PitEntity(int index, boolean kalah) {
-        this.index = index;
-        this.kalah = kalah;
-        //TODO cleanup
-        if (kalah) {
-            stonesCount = 0;
-        }
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
@@ -43,15 +34,11 @@ public class PitEntity {
     @Temporal(TIMESTAMP)
     private Date lastUpdated;
 
-//    @ManyToOne
-//    private PlayerEntity player;
-//    @JoinColumn(name = "PLAYER_ID")
-
     @Column(name = "IS_KALAH")
     private boolean kalah;
 
     @Column(name = "STONES_COUNT")
-    private int stonesCount = GameSpecifications.STONES_COUNT_PER_PIT;
+    private int stonesCount = GameSpecifications.INITIAL_STONES_COUNT_PER_PIT;
 
     public int extractStones() {
         int extractedStonesCount = stonesCount;

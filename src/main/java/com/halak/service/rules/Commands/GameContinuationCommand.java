@@ -5,6 +5,9 @@ import com.halak.service.rules.GameContext;
 import org.apache.commons.chain.Command;
 import org.apache.commons.chain.Context;
 
+/**
+ * Decides if game can be continued, if game is complete already - throws exception and breaks the game chain
+ */
 public class GameContinuationCommand extends AbstractGameCommand implements Command {
 
     @Override

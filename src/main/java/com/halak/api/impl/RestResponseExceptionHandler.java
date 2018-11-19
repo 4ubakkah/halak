@@ -13,9 +13,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @Slf4j
 @ControllerAdvice
+// Controller mapping all possible RuntimeExceptions to proper Http Responses
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {ValidationException.class, NonEligibleMoveException.class, GameDoesntExistException.class})
+    @ExceptionHandler(value = {ValidationException.class, NonEligibleMoveException.class, GameDoesNotExistException.class})
     protected ResponseEntity<Object> handleBadRequestCausingExceptions(RuntimeException ex, WebRequest request) {
         log.error("Error: {}", ex.getMessage(), ex);
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());

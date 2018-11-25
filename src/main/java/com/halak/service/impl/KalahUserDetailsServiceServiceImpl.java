@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
+//TODO add unit test
 @Service
 public class KalahUserDetailsServiceServiceImpl implements UserDetailsService {
 

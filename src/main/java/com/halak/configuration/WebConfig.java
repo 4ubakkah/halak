@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-//TODO rework
+//TODO get rid of
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override

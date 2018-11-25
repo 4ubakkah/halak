@@ -11,7 +11,6 @@ import com.halak.service.rules.GameContext;
 import com.halak.service.rules.KalahGameChain;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

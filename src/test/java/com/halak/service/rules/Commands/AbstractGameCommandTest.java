@@ -19,10 +19,6 @@ class AbstractGameCommandTest {
     @DisplayName("[Should] return gameContext by type converting context")
     void getGameContext() {
         AbstractGameCommand gameCommand = new AbstractGameCommand() {
-            @Override
-            protected GameContext getGameContext(Context context) {
-                return super.getGameContext(context);
-            }
         };
 
         Context context = new GameContext(GameState.builder().build(), 0, 0, "");
@@ -35,10 +31,6 @@ class AbstractGameCommandTest {
     @DisplayName("[Should] return gameContext by type converting context")
     void getGameContext_throwsException() {
         AbstractGameCommand gameCommand = new AbstractGameCommand() {
-            @Override
-            protected GameContext getGameContext(Context context) {
-                return super.getGameContext(context);
-            }
         };
 
         Context context = new ContextBase(new HashMap());

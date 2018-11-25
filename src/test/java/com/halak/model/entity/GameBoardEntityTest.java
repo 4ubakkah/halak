@@ -3,15 +3,13 @@ package com.halak.model.entity;
 import com.halak.configuration.GameSpecifications;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.TestComponent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameBoardEntityTest {
 
     @Test
-    @DisplayName("[Should] intialize game board with proper pits content")
+    @DisplayName("[Should] initialize game board with proper pits content")
     void testInitialGameBoardState() {
         GameBoardEntity gameBoardEntity = new GameBoardEntity();
 

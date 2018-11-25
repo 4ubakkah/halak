@@ -5,6 +5,7 @@ import com.halak.model.exception.NonExistingPitIndexException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 import static com.halak.configuration.GameSpecifications.*;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Entity
 @AllArgsConstructor

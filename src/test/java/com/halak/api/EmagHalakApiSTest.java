@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+//TODO use awaitility/ or other solution to exclude async race issue
 @SpringBootTest(classes = {DemoApplication.class})
 @ExtendWith(SpringExtension.class)
 public class EmagHalakApiSTest {

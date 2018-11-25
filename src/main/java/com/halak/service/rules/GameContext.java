@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Builder
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @AllArgsConstructor
 public class GameContext extends ContextBase {
 

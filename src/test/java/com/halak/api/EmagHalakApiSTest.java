@@ -29,6 +29,8 @@ import java.util.List;
 
 import static com.halak.api.impl.EmagHalakApiImpl.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -56,7 +58,7 @@ public class EmagHalakApiSTest {
     @Test
     @DisplayName("Smoke test for get game operation")
     public void shouldReturnOk_whenGetGame() throws Exception {
-        MvcResult createResult = mvc.perform(MockMvcRequestBuilders.post(BASE_GAME_URI + CREATE_GAME_URI)
+        MvcResult createResult = mvc.perform(post(BASE_GAME_URI + CREATE_GAME_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -84,7 +86,7 @@ public class EmagHalakApiSTest {
     @Test
     @DisplayName("Smoke test for create game operation")
     public void shouldReturnOk_whenCreateGame() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(BASE_GAME_URI + CREATE_GAME_URI)
+        MvcResult result = mvc.perform(post(BASE_GAME_URI + CREATE_GAME_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -105,7 +107,7 @@ public class EmagHalakApiSTest {
     @DisplayName("Smoke test for play game operation")
     public void shouldReturnOk_whenPlayGame() throws Exception {
         // create game first
-        MvcResult createResult = mvc.perform(MockMvcRequestBuilders.post(BASE_GAME_URI + CREATE_GAME_URI)
+        MvcResult createResult = mvc.perform(post(BASE_GAME_URI + CREATE_GAME_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -143,9 +145,10 @@ public class EmagHalakApiSTest {
     @Test
     @DisplayName("Smoke test for play game operation given non-eligible pitId")
     public void shouldReturnBadRequest_whenPlayGame_givenPitIdOutsidePlayersBoard() throws Exception {
-        MvcResult createResult = mvc.perform(MockMvcRequestBuilders.post(BASE_GAME_URI + CREATE_GAME_URI)
+        MvcResult createResult = mvc.perform(post(BASE_GAME_URI + CREATE_GAME_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
+                .andExpect(request().asyncStarted())
                 .andExpect(status().isCreated())
                 .andReturn();
 

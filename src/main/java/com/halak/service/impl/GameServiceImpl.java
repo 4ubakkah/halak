@@ -11,6 +11,7 @@ import com.halak.service.rules.GameContext;
 import com.halak.service.rules.KalahGameChain;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -60,6 +61,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    //TODO add authority checks
+    //@PreAuthorize("hasAuthority('GAME_INFO_READ')")
     public Optional<GameState> getInfo(Long gameId) {
         return gameStateRepository.findGameById(gameId);
     }

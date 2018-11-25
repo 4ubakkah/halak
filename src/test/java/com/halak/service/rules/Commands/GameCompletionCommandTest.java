@@ -53,7 +53,7 @@ class GameCompletionCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).build();
 
@@ -87,7 +87,7 @@ class GameCompletionCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).build();
 

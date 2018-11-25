@@ -16,19 +16,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "PLAYER")
-public class PlayerEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
-    private Long id;
-
-    @Version
-    private Integer version = 0;
-
-    @Column(name = "LAST_UPDATED")
-    @Temporal(TIMESTAMP)
-    private Date lastUpdated;
+public class PlayerEntity extends BaseEntity {
 
     @Column(name = "NAME")
     private String name;

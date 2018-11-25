@@ -17,22 +17,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "PIT")
-public class PitEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
-    private Long id;
-
-    @Version
-    private Integer version = 0;
+public class PitEntity extends BaseEntity {
 
     @Column(name = "INDEX")
     private Integer index;
-
-    @Column(name = "LAST_UPDATED")
-    @Temporal(TIMESTAMP)
-    private Date lastUpdated;
 
     @Column(name = "IS_KALAH")
     private boolean kalah;

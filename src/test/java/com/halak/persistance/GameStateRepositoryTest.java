@@ -1,6 +1,8 @@
 package com.halak.persistance;
 
+import com.halak.model.entity.GameBoardEntity;
 import com.halak.model.entity.GameState;
+import com.halak.model.entity.PlayerEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,12 +28,16 @@ public class GameStateRepositoryTest {
     @Test
     @DisplayName("[Should] find game by id [Given] existing game id")
     public void findGameById() {
-        GameState persistedGameState = entityManager.persist(new GameState());
+        GameState gameState = new GameState();
+        gameState.setActivePlayerEntity(new PlayerEntity());
+        GameBoardEntity gameBoardEntity = new GameBoardEntity();
+        gameState.setGameBoard(gameBoardEntity);
+        GameState persistedGameState = entityManager.persist(gameState);
 
         Optional<GameState> gameById = gameStateRepository.findGameById(persistedGameState.getId());
 
         assertThat(gameById).isPresent();
-        assertThat(gameById).hasValueSatisfying(gameState -> gameState.getId().equals(persistedGameState.getId()));
+        assertThat(gameById).hasValueSatisfying(gs -> gameState.getId().equals(persistedGameState.getId()));
     }
 
     @Test

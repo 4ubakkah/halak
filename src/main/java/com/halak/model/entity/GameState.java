@@ -1,9 +1,11 @@
 package com.halak.model.entity;
 
+import com.fasterxml.jackson.databind.JsonSerializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,20 +18,9 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "GAME_STATE")
-public class GameState {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
-    private Long id;
-
-    @Version
-    private Integer version = 0;
-
-    @Column(name = "LAST_UPDATED")
-    @Temporal(TIMESTAMP)
-    private Date lastUpdated;
+public class GameState extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PlayerEntity activePlayerEntity;

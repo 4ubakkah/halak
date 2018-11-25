@@ -19,6 +19,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(value = {ValidationException.class, NonEligibleMoveException.class, GameDoesNotExistException.class})
     protected ResponseEntity<Object> handleBadRequestCausingExceptions(RuntimeException ex, WebRequest request) {
         log.error("Error: {}", ex.getMessage(), ex);
+        //TODO hide exception message from consumer/ put a generic message to error response dto
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());
         return handleExceptionInternal(ex, errorResponseDto, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
@@ -26,6 +27,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(value = {UnsupportedContextType.class, NonExistingPitIndexException.class})
     protected ResponseEntity<Object> handleInternalServerErrorCausingExceptions(RuntimeException ex, WebRequest request) {
         log.error("Error: {}", ex.getMessage(), ex);
+        //TODO hide exception message from consumer/ put a generic message to error response dto
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());
         return handleExceptionInternal(ex, errorResponseDto, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
@@ -33,6 +35,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleAllTheRestRuntimeExceptions(RuntimeException ex, WebRequest request) {
         log.error("Error: {}", ex.getMessage(), ex);
+        //TODO hide exception message from consumer/ put a generic message to error response dto
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(ex.getMessage());
         return handleExceptionInternal(ex, errorResponseDto, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

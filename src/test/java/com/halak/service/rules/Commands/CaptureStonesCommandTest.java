@@ -42,7 +42,7 @@ class CaptureStonesCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).lastSownPitIndex(0).build();
 
@@ -77,7 +77,7 @@ class CaptureStonesCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).lastSownPitIndex(6).build();
 
@@ -112,7 +112,7 @@ class CaptureStonesCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).lastSownPitIndex(6).build();
 
@@ -147,7 +147,7 @@ class CaptureStonesCommandTest {
 
         GameState gameState = new GameStateFactory().defaultGameState();
         gameState.setComplete(true);
-        gameState.setGameBoard(GameBoardEntity.builder().pitEntities(pits).build());
+        gameState.setGameBoard(GameBoardEntity.builder().pits(pits).build());
 
         GameContext gameContext = GameContext.builder().gameState(gameState).lastSownPitIndex(6).build();
 

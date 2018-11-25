@@ -15,7 +15,7 @@ class GameBoardEntityTest {
     void testInitialGameBoardState() {
         GameBoardEntity gameBoardEntity = new GameBoardEntity();
 
-        gameBoardEntity.getPitEntities().forEach(pit -> {
+        gameBoardEntity.getPits().forEach(pit -> {
             if (pit.isKalah()) {
                 // Initially all Kalah pits have 0 stones
                 assertThat(pit.getStonesCount()).isEqualTo(GameSpecifications.INITIAL_STONES_COUNT_PER_KALAH);

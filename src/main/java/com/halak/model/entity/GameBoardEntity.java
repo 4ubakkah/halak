@@ -19,27 +19,17 @@ import static com.halak.configuration.GameSpecifications.*;
 @Entity
 @AllArgsConstructor
 @Table(name = "GAME_BOARD")
-public class GameBoardEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", unique = true, nullable = false, columnDefinition = "DECIMAL")
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "GAME_STATE_ID")
-    private GameState gameState;
+public class GameBoardEntity extends BaseEntity{
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "PITS")
-    private List<PitEntity> pitEntities = new ArrayList<>(PITS_COUNT_OVERALL);
+    private List<PitEntity> pits = new ArrayList<>(PITS_COUNT_OVERALL);
 
     public GameBoardEntity() {
         fillPitsWithStones();
     }
 
     private void fillPitsWithStones() {
-        pitEntities = IntStream.range(0, (PITS_COUNT_PER_PLAYER + KALAHS_COUNT_PER_PLAYER) * PLAYERS_COUNT)
+        pits = IntStream.range(0, (PITS_COUNT_PER_PLAYER + KALAHS_COUNT_PER_PLAYER) * PLAYERS_COUNT)
                 .mapToObj(i -> isKalah(i) ? PitEntityFactory.kalahPit(i) : PitEntityFactory.pit(i))
                 .collect(Collectors.toList());
     }
@@ -55,10 +45,10 @@ public class GameBoardEntity {
         }
 
         // due to all the checks previously we are pretty much sure that we are able to retrieve one pit entry here
-        return pitEntities.stream().filter(pit -> pit.getIndex() == index).findFirst().get();
+        return pits.stream().filter(pit -> pit.getIndex() == index).findFirst().get();
     }
 
     public List<PitEntity> getPitsInRange(int fromIndex, int toIndex) {
-        return pitEntities.subList(fromIndex, toIndex);
+        return pits.subList(fromIndex, toIndex);
     }
 }

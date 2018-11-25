@@ -17,7 +17,7 @@ public class GameMapperImpl implements GameMapper {
     @Override
     public GameDto toDto(GameState gameState) {
         return GameDto.builder().gameId(gameState.getId())
-                .pits(pitMapper.toDtoList(gameState.getGameBoard().getPitEntities()))
+                .pits(pitMapper.toDtoList(gameState.getGameBoard().getPits()))
                 .activePlayer(gameState.getActivePlayerEntity().getName())
                 .build();
     }
